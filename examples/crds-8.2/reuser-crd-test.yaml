@@ -1,0 +1,15 @@
+# New in operator 8.2. Short name: reuser.
+# A user inside the Redis Enterprise cluster. Password comes from the secret.
+# A role binding is what grants this user access. The user alone has no database rights.
+apiVersion: app.redislabs.com/v1alpha1
+kind: RedisEnterpriseUser
+metadata:
+  name: crd-test-user
+  namespace: redis-ent
+spec:
+  username: crd-test-user
+  authMethod: Basic
+  passwordMode: Single
+  email: crd-test-user@example.com
+  passwordSecrets:
+    - name: crd-test-user-password

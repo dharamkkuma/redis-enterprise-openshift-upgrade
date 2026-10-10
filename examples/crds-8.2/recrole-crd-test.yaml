@@ -1,0 +1,13 @@
+# New in operator 8.2. Short name: recrole.
+# Cluster-scoped role. The ACL applies to every database on this REC.
+# managementRole is a cluster management permission, separate from the data ACL.
+apiVersion: app.redislabs.com/v1alpha1
+kind: RedisEnterpriseClusterRole
+metadata:
+  name: crd-test-cluster-role
+  namespace: redis-ent
+spec:
+  managementRole: ClusterViewer
+  acl:
+    name: crd-test-acl
+    kind: RedisEnterpriseACL

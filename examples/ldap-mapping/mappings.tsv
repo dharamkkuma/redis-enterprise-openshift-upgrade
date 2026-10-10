@@ -1,0 +1,5 @@
+# <mapping-name>	<ldap-group-dn>	<role-ref>[,<role-ref>...]
+# TAB-separated. Role refs: rerole/<cr-name>, recrole/<cr-name>, role:<internal-name>, uid:<n>.
+# These two use the CRD example objects from examples/crds-8.2/.
+app-readers	cn=redis-app-readers,ou=groups,dc=example,dc=com	rerole/crd-test-role
+platform-viewers	cn=redis-platform,ou=groups,dc=example,dc=com	recrole/crd-test-cluster-role

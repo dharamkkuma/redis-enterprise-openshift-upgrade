@@ -1,0 +1,57 @@
+# Kubernetes Job that applies the LDAP group -> role mappings.
+#
+# The script and the mappings file come from the ConfigMap named
+# ldap-role-mapping. Create it from the two files in this directory:
+#
+#   oc -n redis-ent create configmap ldap-role-mapping \
+#     --from-file=ldap-role-mapping.sh=ldap-role-mapping.sh \
+#     --from-file=mappings.tsv=mappings.tsv \
+#     --dry-run=client -o yaml | oc apply -f -
+#
+# Credentials come from the REC credential secret (name = REC name,
+# keys username / password). Nothing is printed. The script only calls
+# the Redis Enterprise API, so no ServiceAccount or RBAC is needed.
+#
+# The image is the running REC node image: it already has bash, curl and
+# python3, and it is already pulled on the Redis workers, so this starts
+# without touching a registry. Match the tag to the REC image.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ldap-role-mapping
+  namespace: redis-ent
+spec:
+  backoffLimit: 3
+  ttlSecondsAfterFinished: 86400
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: mapper
+          image: redislabs/redis:8.2.0-78.18
+          imagePullPolicy: IfNotPresent
+          command: ["bash", "/work/ldap-role-mapping.sh"]
+          env:
+            - name: REC_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: rec-a
+                  key: username
+            - name: REC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: rec-a
+                  key: password
+            - name: REC_API_URL
+              value: "https://rec-a:9443"
+            - name: REC_NAMESPACE
+              value: "redis-ent"
+            - name: PRUNE
+              value: "false"
+          volumeMounts:
+            - name: work
+              mountPath: /work
+      volumes:
+        - name: work
+          configMap:
+            name: ldap-role-mapping

@@ -1,0 +1,14 @@
+# New in operator 8.2. Short name: recrolebinding.
+# Binds crd-test-user to the cluster role. Same namespace.
+apiVersion: app.redislabs.com/v1alpha1
+kind: RedisEnterpriseClusterRoleBinding
+metadata:
+  name: crd-test-cluster-rolebinding
+  namespace: redis-ent
+spec:
+  roleRef:
+    name: crd-test-cluster-role
+    kind: RedisEnterpriseClusterRole
+  subjects:
+    - name: crd-test-user
+      kind: RedisEnterpriseUser

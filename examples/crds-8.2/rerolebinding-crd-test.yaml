@@ -1,0 +1,14 @@
+# New in operator 8.2. Short name: rerolebinding.
+# Binds crd-test-user to the scoped role. Access is only crd-test-db, read ACL.
+apiVersion: app.redislabs.com/v1alpha1
+kind: RedisEnterpriseRoleBinding
+metadata:
+  name: crd-test-rolebinding
+  namespace: redis-ent
+spec:
+  roleRef:
+    name: crd-test-role
+    kind: RedisEnterpriseRole
+  subjects:
+    - name: crd-test-user
+      kind: RedisEnterpriseUser

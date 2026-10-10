@@ -1,0 +1,21 @@
+# New in operator 8.2. Short name: rerole.
+# Scoped role. managementRole is limited to DB Member, DB Viewer, or None.
+# A scope is a RedisEnterpriseDatabase, or an internal database (kind: bdb).
+# A REAADB object is not a valid scope.
+#
+# If the cluster license is already at its shard limit (check "SHARDS" in
+# oc get rec), a new REDB cannot be created. Scope to an existing internal
+# database instead: kind: bdb and its name, as below.
+apiVersion: app.redislabs.com/v1alpha1
+kind: RedisEnterpriseRole
+metadata:
+  name: crd-test-role
+  namespace: redis-ent
+spec:
+  managementRole: DBViewer
+  acl:
+    name: crd-test-acl
+    kind: RedisEnterpriseACL
+  scopes:
+    - name: aa-demo
+      kind: bdb

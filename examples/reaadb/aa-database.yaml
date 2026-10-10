@@ -1,0 +1,25 @@
+# Active-Active database with the Redis version in the YAML.
+# A version upgrade = change redisVersion and apply this file on ONE
+# site only. The other site follows. Do not apply it on both sites.
+# Both sites need operator 8.0.2-2 or later for the follow behaviour.
+apiVersion: app.redislabs.com/v1alpha1
+kind: RedisEnterpriseActiveActiveDatabase
+metadata:
+  name: aa-demo
+  namespace: redis-ent
+spec:
+  globalConfigurations:
+    memorySize: 100MB
+    shardCount: 1
+    # replication must stay true: during a REC roll the pod holding the
+    # primary is terminated and the replica is promoted automatically.
+    replication: true
+    redisVersion: "8.6"
+    proxyPolicy: all-nodes
+    evictionPolicy: allkeys-lru
+    tlsMode: replica_ssl
+    dataInternodeEncryption: true
+    defaultUser: true
+  participatingClusters:
+    - name: rerc-site1
+    - name: rerc-site2

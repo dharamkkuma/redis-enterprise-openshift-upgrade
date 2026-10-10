@@ -1,0 +1,18 @@
+# REC option 2: approving the operator leaves the REC image alone.
+# You set versionTag on the live REC in the same window.
+# Take the tag from the target operator's release notes.
+# If a digestHash is pinned on the REC, change it too — versionTag
+# alone does not move pods when a digest is set.
+apiVersion: app.redislabs.com/v1
+kind: RedisEnterpriseCluster
+metadata:
+  name: rec-a
+  namespace: redis-ent
+spec:
+  nodes: 3
+  upgradeSpec:
+    autoUpgradeRedisEnterprise: false
+  redisEnterpriseImageSpec:
+    imagePullPolicy: IfNotPresent
+    repository: registry.connect.redhat.com/redislabs/redis-enterprise
+    versionTag: "<tag-from-operator-release-notes>"

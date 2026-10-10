@@ -1,0 +1,9 @@
+# New in operator 8.2. Short name: reacl.
+# A Redis ACL rule. Roles reference this object. It does not attach to a database by itself.
+apiVersion: app.redislabs.com/v1alpha1
+kind: RedisEnterpriseACL
+metadata:
+  name: crd-test-acl
+  namespace: redis-ent
+spec:
+  acl: "~* +@read"

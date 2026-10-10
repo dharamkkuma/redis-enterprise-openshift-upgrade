@@ -1,0 +1,19 @@
+# Not new in 8.2. RedisEnterpriseDatabase already existed on 8.0.
+# Kept here because a RedisEnterpriseRole scope is normally a REDB.
+# Skip this if the cluster license is already at its shard limit —
+# admission rejects the create. In that case scope the role in
+# rerole-crd-test.yaml to an existing internal bdb instead.
+apiVersion: app.redislabs.com/v1alpha1
+kind: RedisEnterpriseDatabase
+metadata:
+  name: crd-test-db
+  namespace: redis-ent
+  labels:
+    app.kubernetes.io/name: crd-test-8.2
+spec:
+  memorySize: 100MB
+  shardCount: 1
+  replication: false
+  tlsMode: disabled
+  defaultUser: true
+  evictionPolicy: allkeys-lru

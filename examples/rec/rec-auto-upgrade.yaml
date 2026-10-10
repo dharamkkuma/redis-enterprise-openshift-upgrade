@@ -1,0 +1,15 @@
+# REC option 1: the REC rolls as soon as the operator is upgraded.
+# Set BEFORE approving the operator InstallPlan. Changing only this
+# field must not restart pods.
+#
+# Do not pin redisEnterpriseImageSpec.digestHash with this option —
+# operator 8.2 rejects the combination and freezes the REC.
+apiVersion: app.redislabs.com/v1
+kind: RedisEnterpriseCluster
+metadata:
+  name: rec-a
+  namespace: redis-ent
+spec:
+  nodes: 3
+  upgradeSpec:
+    autoUpgradeRedisEnterprise: true
